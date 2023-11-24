@@ -6,6 +6,8 @@
 # this is simple: you can substitute Son in place of Father; you can put chile class in place of base class. 
 # if putting son in place of father gives issue -> it breaks LSP; (eg. son can't go to work in father's office, a silly eg. but breaks LSP)
 
+
+# Ref: https://web.archive.org/web/20150905081111/http://www.objectmentor.com/resources/articles/lsp.pdf
 class Father:
     def goes_to_office(self):
         print("goes to office")
