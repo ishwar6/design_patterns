@@ -2,6 +2,7 @@
 
 # Python Code for Abstraction:
 
+
 from abc import ABC, abstractmethod
 
 class Vehicle(ABC):
