@@ -15,6 +15,7 @@ class Father:
 class Son(Father):
     def goes_to_office(self):
         raise Exception("Cannot go to office")
+        
 
 def testing_office_going_condition(Father: Father):
     Father.goes_to_office()
