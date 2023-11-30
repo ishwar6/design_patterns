@@ -2,8 +2,6 @@
 #So this makes a way to ensure that customer queries are handled efficiently, with each query being addressed by the most appropriate team member based on its complexity.
 
 
-
-
 from abc import ABC, abstractmethod
 
 class Logger:
