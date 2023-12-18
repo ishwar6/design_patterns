@@ -1,5 +1,8 @@
 # this is the Target Interface. This interface will be used in rest of adapters. like mysql, psql, mongodb etc. 
 
+# Scenario: Applications that need to support multiple types of databases (SQL, NoSQL).
+# Role of Adapter: Database drivers act as adapters, providing a unified API to interact with different database systems, enabling the application to switch databases with minimal changes.
+
 class DatabaseInterface:
     def connect(self):
         pass
