@@ -7,7 +7,6 @@
 
 #The challenge is to create a remote control system that is decoupled from the devices it controls,
 # allowing for the easy addition of new types of devices without modifying the remote control interface and vice versa.
-
 # Implementation Hierarchy
 
 # This interface defines the operations that all devices should implement (like power on/off, volume up/down).
