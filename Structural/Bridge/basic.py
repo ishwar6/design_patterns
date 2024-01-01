@@ -1,7 +1,6 @@
 # Bridge is a structural design pattern that lets you split a large class or a set of closely related classes into two separate hierarchies—abstraction and implementation—
 # which can be developed independently of each other.
 
-
 # Scenario: Universal Remote Control System
 # Imagine a universal remote control system designed to operate various electronic devices like TVs, DVD players, and Music Systems.
 # Each device type has its own set of functionalities, and the remote control interface should work with all these different devices.
