@@ -11,6 +11,7 @@
 # One approach taken in these scenarios is to create a register of singletons of the subclasses and the getInstance method can take in a parameter or use an environment variable to return the desired singleton. 
 # The registry then maintains a mapping of string names to singleton objects, which can be accessed as needed.
 
+
 class Singleton:
     _instance = None
 
