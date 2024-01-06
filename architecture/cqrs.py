@@ -7,7 +7,6 @@
 #https://martinfowler.com/bliki/CQRS.html
 # At its heart is the notion that you can use a different model to update information than the model you use to read information. 
 # For some situations, this separation can be valuable, but beware that for most systems CQRS adds risky complexity.
-
 # The change that CQRS introduces is to split that conceptual model into separate models for update and display, 
 # which it refers to as Command and Query respectively following the vocabulary of CommandQuerySeparation.
 
