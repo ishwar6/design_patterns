@@ -10,7 +10,6 @@
 
 # The change that CQRS introduces is to split that conceptual model into separate models for update and display, 
 # which it refers to as Command and Query respectively following the vocabulary of CommandQuerySeparation.
-
 # CQRS fits well with event-based programming models. It's common to see CQRS system split into separate services communicating with Event Collaboration.
 # This allows these services to easily take advantage of Event Sourcing.
 
