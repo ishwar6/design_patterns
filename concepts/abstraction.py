@@ -9,7 +9,6 @@ class Vehicle(ABC):
     def control_system(self):
         pass
 
-
 # any car Sedan or SUV can use it. Or even electric. As far as they know how to implement it. -> this is abstraction. 
 
 # This is Abstraction - focusing on the high-level mechanism for vehicle control without worrying about the specifics of each vehicle.
