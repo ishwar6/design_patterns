@@ -9,7 +9,6 @@
 # allowing for the easy addition of new types of devices without modifying the remote control interface and vice versa.
 # Implementation Hierarchy
 
-
 # This interface defines the operations that all devices should implement (like power on/off, volume up/down).
 class Device:
     def turn_on(self):
