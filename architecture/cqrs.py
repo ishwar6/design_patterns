@@ -3,7 +3,6 @@
 #Implementing CQRS in your application can maximize its performance, scalability, and security. 
 #The flexibility created by migrating to CQRS allows a system to better evolve over time and prevents update commands from causing merge conflicts at the domain level.
 
-
 #https://martinfowler.com/bliki/CQRS.html
 # At its heart is the notion that you can use a different model to update information than the model you use to read information. 
 # For some situations, this separation can be valuable, but beware that for most systems CQRS adds risky complexity.
