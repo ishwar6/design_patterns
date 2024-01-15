@@ -48,7 +48,6 @@ class Producer:
 
 
 # consumer Class
-
 class Consumer:
     def __init__(self, broker, topic):
         self.broker = broker
