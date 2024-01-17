@@ -8,7 +8,6 @@ class Message:
         self.data = data
 
 
-
 # Broker Class
 
 import threading
