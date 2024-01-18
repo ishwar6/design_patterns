@@ -7,7 +7,6 @@ class Message:
         self.topic = topic
         self.data = data
 
-
 # Broker Class
 
 import threading
