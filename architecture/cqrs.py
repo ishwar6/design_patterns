@@ -17,7 +17,6 @@
 # If your application sees a big disparity between reads and writes this is very handy. Even without that, you can apply different optimization strategies to the two sides. 
 # An example of this is using different database access techniques for read and update.
 
-
 from abc import ABC, abstractmethod
 from typing import List, Union
 
