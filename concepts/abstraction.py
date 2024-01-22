@@ -13,7 +13,6 @@ class Vehicle(ABC):
 
 # This is Abstraction - focusing on the high-level mechanism for vehicle control without worrying about the specifics of each vehicle.
 
-
 # Python code for polymorphism: 
 
 class Sedan(Vehicle):
