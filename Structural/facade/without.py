@@ -6,6 +6,7 @@ import pymysql
 def generate_otp():
     return random.randint(100000, 999999)
 
+
 def store_otp_in_db(member_id, otp, connection):
     with connection.cursor() as cursor:
         expiration_time = datetime.datetime.now() + datetime.timedelta(minutes=5)  # OTP expires in 5 minutes
