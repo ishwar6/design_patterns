@@ -22,5 +22,13 @@ A bad approach would be to hard-code everything
 for each payment provider inside the logic itself, which would make it difficult to switch providers later.
 """
 
+# Better Approach (Program to an Interface):
 
+from abc import ABC, abstractmethod
+
+class PaymentProcessor(ABC):
+    
+    @abstractmethod
+    def process_payment(self, amount):
+        pass
 
