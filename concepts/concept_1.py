@@ -34,6 +34,7 @@ class PaymentProcessor(ABC):
 
 
 
+
 # now we will do concrete implmentation for Paypal
 
 class Paypal(PaymentProcessor):
@@ -46,3 +47,15 @@ class Stripe(PaymentProcessor):
     def process_payment(self, amount: float):
         print(f"Processing payment by stripe of {amount}")
         return super().process_payment(amount)
+
+
+# now lets make checkout class
+
+# The Checkout class now depends on the PaymentProcessor interface
+class Checkout:
+    def __init__(self, payment_processor: PaymentProcessor) -> None:
+        self.payment_processor = payment_processor
+    
+
+    def process_order(self, amount:float):
+        self.payment_processor.process_payment(amount)
