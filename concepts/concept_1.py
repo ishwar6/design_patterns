@@ -27,8 +27,22 @@ for each payment provider inside the logic itself, which would make it difficult
 from abc import ABC, abstractmethod
 
 class PaymentProcessor(ABC):
-    
+
     @abstractmethod
-    def process_payment(self, amount):
+    def process_payment(self, amount:float):
         pass
 
+
+
+# now we will do concrete implmentation for Paypal
+
+class Paypal(PaymentProcessor):
+    def process_payment(self, amount:float):
+        print(f"processing payment of {amount} by paypal")
+        return super().process_payment(amount)
+
+
+class Stripe(PaymentProcessor):
+    def process_payment(self, amount: float):
+        print(f"Processing payment by stripe of {amount}")
+        return super().process_payment(amount)
