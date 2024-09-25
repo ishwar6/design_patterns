@@ -36,7 +36,6 @@ class PaymentProcessor(ABC):
 
 
 # now we will do concrete implmentation for Paypal
-
 class Paypal(PaymentProcessor):
     def process_payment(self, amount:float):
         print(f"processing payment of {amount} by paypal")
