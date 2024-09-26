@@ -48,6 +48,7 @@ class Stripe(PaymentProcessor):
         return super().process_payment(amount)
 
 
+
 # now lets make checkout class
 
 # The Checkout class now depends on the PaymentProcessor interface
