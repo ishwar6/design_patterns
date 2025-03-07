@@ -1,11 +1,14 @@
 python
 class Feature:
-    def __init__(self, name, value):
+    def __init__(self, name, description):
         self.name = name
-        self.value = value
+        self.description = description
 
-    def update_value(self, new_value):
-        self.value = new_value
+    def activate(self):
+        return f"{self.name} feature activated."
 
-    def __str__(self):
-        return f"Feature: {self.name}, Value: {self.value}"
+    def deactivate(self):
+        return f"{self.name} feature deactivated."
+
+    def status(self):
+        return f"Feature: {self.name}, Description: {self.description}"
