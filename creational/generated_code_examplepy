@@ -1,35 +1,19 @@
 python
-class Product:
-    def __init__(self, name, price):
-        self.name = name
-        self.price = price
+class SingletonMeta(type):
+    _instances = {}
 
-    def __str__(self):
-        return f"{self.name}: ${self.price}"
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            instance = super().__call__(*args, **kwargs)
+            cls._instances[cls] = instance
+        return cls._instances[cls]
 
+class Singleton(metaclass=SingletonMeta):
+    def __init__(self):
+        self.value = None
 
-class ProductFactory:
-    def create_product(self, name, price):
-        return Product(name, price)
+    def set_value(self, value):
+        self.value = value
 
-
-class Store:
-    def __init__(self, factory):
-        self.factory = factory
-        self.products = []
-
-    def add_product(self, name, price):
-        product = self.factory.create_product(name, price)
-        self.products.append(product)
-
-    def display_products(self):
-        for product in self.products:
-            print(product)
-
-
-if __name__ == "__main__":
-    factory = ProductFactory()
-    store = Store(factory)
-    store.add_product("Laptop", 1200)
-    store.add_product("Smartphone", 800)
-    store.display_products()
+    def get_value(self):
+        return self.value
