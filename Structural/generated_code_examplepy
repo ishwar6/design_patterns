@@ -1,22 +1,14 @@
 python
-class StructuralFeature:
-    def __init__(self, name, dimensions):
+class Feature:
+    def __init__(self, name, enabled=True):
         self.name = name
-        self.dimensions = dimensions
+        self.enabled = enabled
 
-    def calculate_area(self):
-        if self.name == "rectangle":
-            return self.dimensions['width'] * self.dimensions['height']
-        elif self.name == "triangle":
-            return 0.5 * self.dimensions['base'] * self.dimensions['height']
-        elif self.name == "circle":
-            import math
-            return math.pi * (self.dimensions['radius'] ** 2)
-        else:
-            raise ValueError("Unsupported shape: {}".format(self.name))
+    def toggle(self):
+        self.enabled = not self.enabled
 
-    def __str__(self):
-        return "StructuralFeature: {}, Dimensions: {}".format(self.name, self.dimensions)
+    def is_active(self):
+        return self.enabled
 
-    def __repr__(self):
-        return self.__str__()
+def feature_status(features):
+    return {feature.name: feature.is_active() for feature in features}
