@@ -1,23 +1,24 @@
 python
-class BehaviorTracker:
+import random
+
+class UserBehaviorTracker:
     def __init__(self):
-        self.behaviors = {}
+        self.user_data = {}
 
-    def add_behavior(self, user_id, behavior):
-        if user_id not in self.behaviors:
-            self.behaviors[user_id] = []
-        self.behaviors[user_id].append(behavior)
+    def track_event(self, user_id, event):
+        if user_id not in self.user_data:
+            self.user_data[user_id] = []
+        self.user_data[user_id].append(event)
 
-    def get_behaviors(self, user_id):
-        return self.behaviors.get(user_id, [])
+    def get_user_events(self, user_id):
+        return self.user_data.get(user_id, [])
 
-    def average_behaviors(self):
-        total_behaviors = sum(len(b) for b in self.behaviors.values())
-        return total_behaviors / len(self.behaviors) if self.behaviors else 0
+    def get_all_events(self):
+        return {user_id: events for user_id, events in self.user_data.items()}
 
-    def behavior_count(self, user_id):
-        return len(self.get_behaviors(user_id))
+    def random_event_generator(self):
+        return random.choice(['click', 'scroll', 'purchase', 'signup'])
 
-    def clear_behaviors(self, user_id):
-        if user_id in self.behaviors:
-            del self.behaviors[user_id]
+    def simulate_user_activity(self, user_id, num_events=10):
+        for _ in range(num_events):
+            self.track_event(user_id, self.random_event_generator())
