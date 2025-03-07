@@ -3,10 +3,20 @@ class Feature:
     def __init__(self, name, description):
         self.name = name
         self.description = description
+        self.enabled = True
 
-    def display(self):
-        return f'Feature: {self.name}\nDescription: {self.description}'
+    def enable(self):
+        self.enabled = True
 
-    def is_active(self):
-        # Placeholder for a method that determines if the feature is active
-        return True
+    def disable(self):
+        self.enabled = False
+
+    def is_enabled(self):
+        return self.enabled
+
+    def get_details(self):
+        return {
+            "name": self.name,
+            "description": self.description,
+            "enabled": self.enabled
+        }
