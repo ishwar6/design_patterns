@@ -1,11 +1,11 @@
 python
-class FeatureX:
-    def __init__(self, parameter):
-        self.parameter = parameter
+class MyFeature:
+    def __init__(self, data):
+        self.data = data
 
-    def process(self, data):
-        processed_data = [d * self.parameter for d in data]
+    def process(self):
+        processed_data = [self.transform(item) for item in self.data]
         return processed_data
 
-    def display(self):
-        print(f"FeatureX with parameter: {self.parameter}")
+    def transform(self, item):
+        return item * 2
