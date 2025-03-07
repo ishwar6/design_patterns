@@ -1,18 +1,19 @@
 python
 class StructuralFeature:
-    def __init__(self, name, dimensions):
+    def __init__(self, name, properties):
         self.name = name
-        self.dimensions = dimensions
+        self.properties = properties
 
-    def calculate_volume(self):
-        if self.name == "Cube":
-            return self.dimensions['side'] ** 3
-        elif self.name == "Cylinder":
-            return 3.14159 * (self.dimensions['radius'] ** 2) * self.dimensions['height']
-        elif self.name == "Sphere":
-            return (4/3) * 3.14159 * (self.dimensions['radius'] ** 3)
+    def calculate_area(self):
+        if self.name == "Rectangle":
+            return self.properties['length'] * self.properties['width']
+        elif self.name == "Circle":
+            import math
+            return math.pi * (self.properties['radius'] ** 2)
+        elif self.name == "Triangle":
+            return 0.5 * self.properties['base'] * self.properties['height']
         else:
-            raise ValueError("Unknown shape")
+            raise ValueError("Unsupported shape")
 
     def display_info(self):
-        return f"{self.name} with dimensions {self.dimensions} has a volume of {self.calculate_volume()}"
+        return f"{self.name} with properties: {self.properties}"
