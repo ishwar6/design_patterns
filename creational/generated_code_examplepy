@@ -1,20 +1,33 @@
 python
-class SingletonMeta(type):
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            instance = super().__call__(*args, **kwargs)
-            cls._instances[cls] = instance
-        return cls._instances[cls]
+class Shape:
+    def draw(self):
+        raise NotImplementedError("You should implement this method.")
 
 
-class Singleton(metaclass=SingletonMeta):
-    def __init__(self):
-        self.value = None
+class Circle(Shape):
+    def draw(self):
+        return "Drawing a Circle"
 
-    def set_value(self, value):
-        self.value = value
 
-    def get_value(self):
-        return self.value
+class Square(Shape):
+    def draw(self):
+        return "Drawing a Square"
+
+
+class ShapeFactory:
+    @staticmethod
+    def create_shape(shape_type):
+        if shape_type == "Circle":
+            return Circle()
+        elif shape_type == "Square":
+            return Square()
+        else:
+            raise ValueError("Unknown shape type")
+
+
+# Usage
+if __name__ == "__main__":
+    shape1 = ShapeFactory.create_shape("Circle")
+    shape2 = ShapeFactory.create_shape("Square")
+    print(shape1.draw())
+    print(shape2.draw())
