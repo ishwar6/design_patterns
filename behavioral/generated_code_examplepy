@@ -1,0 +1,23 @@
+python
+class BehaviorTracker:
+    def __init__(self):
+        self.behaviors = {}
+
+    def add_behavior(self, user_id, behavior):
+        if user_id not in self.behaviors:
+            self.behaviors[user_id] = []
+        self.behaviors[user_id].append(behavior)
+
+    def get_behaviors(self, user_id):
+        return self.behaviors.get(user_id, [])
+
+    def average_behaviors(self):
+        total_behaviors = sum(len(b) for b in self.behaviors.values())
+        return total_behaviors / len(self.behaviors) if self.behaviors else 0
+
+    def behavior_count(self, user_id):
+        return len(self.get_behaviors(user_id))
+
+    def clear_behaviors(self, user_id):
+        if user_id in self.behaviors:
+            del self.behaviors[user_id]
