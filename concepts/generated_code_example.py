@@ -1,17 +1,11 @@
 python
 class Feature:
-    def __init__(self, name):
+    def __init__(self, name, description):
         self.name = name
-        self.enabled = False
-    
-    def enable(self):
-        self.enabled = True
-    
-    def disable(self):
-        self.enabled = False
-    
-    def is_enabled(self):
-        return self.enabled
+        self.description = description
 
-    def __str__(self):
-        return f"Feature(name={self.name}, enabled={self.enabled})"
+    def display_info(self):
+        return f"Feature: {self.name}\nDescription: {self.description}"
+
+    def is_valid(self):
+        return bool(self.name) and bool(self.description)
