@@ -8,7 +8,7 @@ class SingletonMeta(type):
             cls._instances[cls] = instance
         return cls._instances[cls]
 
-class Singleton(metaclass=SingletonMeta):
+class SingletonClass(metaclass=SingletonMeta):
     def __init__(self):
         self.value = None
 
