@@ -1,18 +1,17 @@
 python
 class Feature:
-    def __init__(self, name, description):
+    def __init__(self, name):
         self.name = name
-        self.description = description
+        self.enabled = False
     
-    def display_info(self):
-        return f"Feature: {self.name}, Description: {self.description}"
+    def enable(self):
+        self.enabled = True
+    
+    def disable(self):
+        self.enabled = False
     
     def is_enabled(self):
-        return True
+        return self.enabled
 
-def feature_list():
-    return [
-        Feature("Feature A", "Description of Feature A"),
-        Feature("Feature B", "Description of Feature B"),
-        Feature("Feature C", "Description of Feature C"),
-    ]
+    def __str__(self):
+        return f"Feature(name={self.name}, enabled={self.enabled})"
