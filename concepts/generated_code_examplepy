@@ -1,11 +1,11 @@
 python
-class MyFeature:
-    def __init__(self, data):
-        self.data = data
+class Feature:
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
 
-    def process(self):
-        processed_data = [self.transform(item) for item in self.data]
-        return processed_data
+    def update_value(self, new_value):
+        self.value = new_value
 
-    def transform(self, item):
-        return item * 2
+    def __str__(self):
+        return f"Feature: {self.name}, Value: {self.value}"
