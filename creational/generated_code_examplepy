@@ -1,0 +1,35 @@
+python
+class Product:
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+
+    def __str__(self):
+        return f"{self.name}: ${self.price}"
+
+
+class ProductFactory:
+    def create_product(self, name, price):
+        return Product(name, price)
+
+
+class Store:
+    def __init__(self, factory):
+        self.factory = factory
+        self.products = []
+
+    def add_product(self, name, price):
+        product = self.factory.create_product(name, price)
+        self.products.append(product)
+
+    def display_products(self):
+        for product in self.products:
+            print(product)
+
+
+if __name__ == "__main__":
+    factory = ProductFactory()
+    store = Store(factory)
+    store.add_product("Laptop", 1200)
+    store.add_product("Smartphone", 800)
+    store.display_products()
