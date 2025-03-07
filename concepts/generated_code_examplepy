@@ -1,17 +1,11 @@
 python
-class Feature:
-    def __init__(self, name, value):
-        self.name = name
-        self.value = value
+class FeatureX:
+    def __init__(self, parameter):
+        self.parameter = parameter
 
-    def calculate(self):
-        return self.value * 2
+    def process(self, data):
+        processed_data = [d * self.parameter for d in data]
+        return processed_data
 
-    def __str__(self):
-        return f"Feature: {self.name}, Value: {self.value}"
-
-def process_features(features):
-    results = {}
-    for feature in features:
-        results[feature.name] = feature.calculate()
-    return results
+    def display(self):
+        print(f"FeatureX with parameter: {self.parameter}")
