@@ -1,21 +1,21 @@
 python
 class StructuralFeature:
-    def __init__(self, name, material, dimensions):
+    def __init__(self, name, value):
         self.name = name
-        self.material = material
-        self.dimensions = dimensions
+        self.value = value
 
-    def calculate_volume(self):
-        length, width, height = self.dimensions
-        return length * width * height
+    def calculate(self):
+        return self.value * 2
 
-    def display_info(self):
-        return {
-            'Name': self.name,
-            'Material': self.material,
-            'Dimensions': self.dimensions,
-            'Volume': self.calculate_volume()
-        }
+    def display(self):
+        print(f"{self.name}: {self.value}")
 
-    def update_dimensions(self, new_dimensions):
-        self.dimensions = new_dimensions
+    @staticmethod
+    def static_method_example():
+        return "This is a static method example."
+
+if __name__ == "__main__":
+    feature = StructuralFeature("ExampleFeature", 10)
+    feature.display()
+    print(f"Calculated value: {feature.calculate()}")
+    print(StructuralFeature.static_method_example())
