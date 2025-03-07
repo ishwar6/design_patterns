@@ -1,23 +1,39 @@
 python
-class UserBehavior:
-    def __init__(self, user_id):
-        self.user_id = user_id
-        self.activities = []
+import random
 
-    def log_activity(self, activity_type, timestamp):
-        self.activities.append({
-            "activity_type": activity_type,
-            "timestamp": timestamp
-        })
+class Behavior:
+    def __init__(self, name):
+        self.name = name
+    
+    def perform(self):
+        raise NotImplementedError("This method should be overridden by subclasses.")
 
-    def get_activity_summary(self):
-        summary = {}
-        for activity in self.activities:
-            activity_type = activity["activity_type"]
-            if activity_type not in summary:
-                summary[activity_type] = 0
-            summary[activity_type] += 1
-        return summary
+class RandomWalk(Behavior):
+    def __init__(self, name, steps):
+        super().__init__(name)
+        self.steps = steps
+    
+    def perform(self):
+        position = 0
+        for _ in range(self.steps):
+            step = random.choice([-1, 1])
+            position += step
+        return position
 
-    def clear_activities(self):
-        self.activities = []
+class SocialBehavior(Behavior):
+    def __init__(self, name, traits):
+        super().__init__(name)
+        self.traits = traits
+    
+    def perform(self):
+        interaction = random.choice(self.traits)
+        return f"{self.name} interacts with {interaction}"
+
+class MimicBehavior(Behavior):
+    def __init__(self, name, sounds):
+        super().__init__(name)
+        self.sounds = sounds
+    
+    def perform(self):
+        sound = random.choice(self.sounds)
+        return f"{self.name} mimics sound: {sound}"
