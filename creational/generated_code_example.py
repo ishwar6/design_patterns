@@ -1,19 +1,21 @@
 python
-class SingletonMeta(type):
-    _instances = {}
+class Singleton:
+    _instance = None
 
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            instance = super().__call__(*args, **kwargs)
-            cls._instances[cls] = instance
-        return cls._instances[cls]
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(Singleton, cls).__new__(cls)
+        return cls._instance
 
-class Singleton(metaclass=SingletonMeta):
-    def __init__(self):
-        self.value = None
+class DatabaseConnection(Singleton):
+    def __init__(self, db_name):
+        if not hasattr(self, 'initialized'):
+            self.db_name = db_name
+            self.initialized = True
+            self.connect()
 
-    def set_value(self, value):
-        self.value = value
+    def connect(self):
+        print(f"Connecting to database: {self.db_name}")
 
-    def get_value(self):
-        return self.value
+def get_database_connection(db_name):
+    return DatabaseConnection(db_name)
