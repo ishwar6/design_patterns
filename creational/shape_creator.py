@@ -1,46 +1,69 @@
-# creational/factory.py
+# creational/factory_method.py
 
 from abc import ABC, abstractmethod
 
 class Shape(ABC):
+    """
+    Abstract base class for shapes.
+    """
+
     @abstractmethod
-    def area(self):
-        """Calculate the area of the shape."""
+    def draw(self) -> None:
+        """
+        Draws the shape. Must be implemented by subclasses.
+        """
         pass
 
 class Circle(Shape):
-    def __init__(self, radius):
-        """Initialize a Circle with a given radius."""
-        self.radius = radius
+    """
+    Represents a circle shape.
+    """
 
-    def area(self):
-        """Calculate the area of the circle."""
-        return 3.14159 * (self.radius ** 2)
+    def draw(self) -> None:
+        """
+        Draws a circle.
+        """
+        print("Drawing a Circle")
 
 class Square(Shape):
-    def __init__(self, side_length):
-        """Initialize a Square with a given side length."""
-        self.side_length = side_length
+    """
+    Represents a square shape.
+    """
 
-    def area(self):
-        """Calculate the area of the square."""
-        return self.side_length ** 2
+    def draw(self) -> None:
+        """
+        Draws a square.
+        """
+        print("Drawing a Square")
 
 class ShapeFactory:
+    """
+    Factory to create shapes.
+    """
+
     @staticmethod
-    def create_shape(shape_type, *args):
-        """Create a shape based on the specified type."""
+    def create_shape(shape_type: str) -> Shape:
+        """
+        Creates a shape based on the provided type.
+
+        :param shape_type: The type of shape to create ('circle' or 'square').
+        :returns: An instance of a shape.
+        :raises ValueError: If an unsupported shape type is provided.
+        """
+        shape_type = shape_type.lower()
         if shape_type == 'circle':
-            return Circle(*args)
+            return Circle()
         elif shape_type == 'square':
-            return Square(*args)
+            return Square()
         else:
-            raise ValueError(f"Unknown shape type: {shape_type}")
+            raise ValueError(f"Unsupported shape type: {shape_type}")
 
 # Sample usage
 if __name__ == "__main__":
-    circle = ShapeFactory.create_shape('circle', 5)
-    print(f"Circle Area: {circle.area()}")  # Output: Circle Area: 78.53975
-
-    square = ShapeFactory.create_shape('square', 4)
-    print(f"Square Area: {square.area()}")  # Output: Square Area: 16
+    try:
+        shapes = ['circle', 'square', 'triangle']
+        for shape_name in shapes:
+            shape = ShapeFactory.create_shape(shape_name)
+            shape.draw()
+    except ValueError as e:
+        print(e)
