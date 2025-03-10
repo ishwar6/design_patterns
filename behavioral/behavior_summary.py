@@ -1,70 +1,57 @@
 # behavioral/behavior_tracker.py
 
-from typing import List, Dict, Any, Optional
-
 class BehaviorTracker:
-    """
-    A class to track and analyze user behaviors over time.
-    
-    Attributes:
-        behaviors (Dict[str, List[Dict[str, Any]]]): A dictionary that maps user IDs to a list of behavior events.
-    """
-    
+    """Tracks user behaviors and generates summaries over specified time intervals."""
+
     def __init__(self):
-        """Initialize an empty behavior tracker."""
-        self.behaviors = {}
-    
-    def add_behavior(self, user_id: str, behavior: str, timestamp: Optional[str] = None) -> None:
-        """
-        Add a behavior event for a given user.
-        
-        Parameters:
-            user_id (str): The ID of the user.
-            behavior (str): A description of the behavior event.
-            timestamp (Optional[str]): An optional timestamp of when the behavior occurred. 
-                                       If not provided, the current time will be used.
-        """
-        if user_id not in self.behaviors:
-            self.behaviors[user_id] = []
-        
-        event = {
-            'behavior': behavior,
-            'timestamp': timestamp
-        }
-        self.behaviors[user_id].append(event)
+        """Initialize the BehaviorTracker with an empty list of behaviors."""
+        self.behaviors = []
 
-    def get_user_behaviors(self, user_id: str) -> List[Dict[str, Any]]:
+    def log_behavior(self, behavior: str) -> None:
+        """Log a new behavior with the current timestamp.
+
+        Args:
+            behavior (str): A description of the behavior to log.
         """
-        Retrieve the list of behavior events for a specific user.
-        
-        Parameters:
-            user_id (str): The ID of the user.
-        
+        from datetime import datetime
+        timestamp = datetime.now()
+        self.behaviors.append((timestamp, behavior))
+
+    def get_summary(self, start_time=None, end_time=None) -> list:
+        """Get a summary of logged behaviors within a specified time interval.
+
+        Args:
+            start_time (datetime, optional): The start time for filtering behaviors.
+            end_time (datetime, optional): The end time for filtering behaviors.
+
         Returns:
-            List[Dict[str, Any]]: A list of behavior events associated with the user.
+            list: A list of behaviors logged between start_time and end_time.
         """
-        return self.behaviors.get(user_id, [])
+        filtered_behaviors = []
+        for timestamp, behavior in self.behaviors:
+            if (start_time is None or timestamp >= start_time) and \
+               (end_time is None or timestamp <= end_time):
+                filtered_behaviors.append((timestamp, behavior))
+        return filtered_behaviors
 
-    def summarize_behaviors(self) -> Dict[str, int]:
-        """
-        Summarize the number of behaviors recorded for each user.
-        
-        Returns:
-            Dict[str, int]: A dictionary mapping user IDs to the count of their behavior events.
-        """
-        return {user_id: len(events) for user_id, events in self.behaviors.items()}
+    def clear_logs(self) -> None:
+        """Clear all logged behaviors."""
+        self.behaviors.clear()
 
-# Sample usage
 
 if __name__ == "__main__":
+    from datetime import datetime, timedelta
+
     tracker = BehaviorTracker()
     
-    tracker.add_behavior("user_1", "login")
-    tracker.add_behavior("user_1", "view_page", "2023-10-01T12:00:00")
-    tracker.add_behavior("user_2", "logout", "2023-10-01T12:05:00")
-    
-    print("User 1 behaviors:")
-    print(tracker.get_user_behaviors("user_1"))
-    
-    print("Behavior summary:")
-    print(tracker.summarize_behaviors())
+    tracker.log_behavior("User logged in")
+    tracker.log_behavior("User viewed profile")
+    tracker.log_behavior("User logged out")
+
+    # Simulate a time interval
+    start = datetime.now() - timedelta(days=1)
+    end = datetime.now()
+
+    summary = tracker.get_summary(start, end)
+    for timestamp, behavior in summary:
+        print(f"[{timestamp}] {behavior}")
