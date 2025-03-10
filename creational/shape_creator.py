@@ -1,69 +1,73 @@
-# creational/factory_method.py
+# creational/shape_factory.py
 
 from abc import ABC, abstractmethod
+from typing import Protocol, List
 
-class Shape(ABC):
-    """
-    Abstract base class for shapes.
-    """
+class Shape(Protocol):
+    @abstractmethod
+    def area(self) -> float:
+        """Calculate the area of the shape."""
+        pass
 
     @abstractmethod
-    def draw(self) -> None:
-        """
-        Draws the shape. Must be implemented by subclasses.
-        """
+    def perimeter(self) -> float:
+        """Calculate the perimeter of the shape."""
         pass
 
 class Circle(Shape):
-    """
-    Represents a circle shape.
-    """
+    def __init__(self, radius: float):
+        self.radius = radius
 
-    def draw(self) -> None:
-        """
-        Draws a circle.
-        """
-        print("Drawing a Circle")
+    def area(self) -> float:
+        """Compute the area of the circle."""
+        return 3.14159 * (self.radius ** 2)
 
-class Square(Shape):
-    """
-    Represents a square shape.
-    """
+    def perimeter(self) -> float:
+        """Compute the perimeter of the circle."""
+        return 2 * 3.14159 * self.radius
 
-    def draw(self) -> None:
-        """
-        Draws a square.
-        """
-        print("Drawing a Square")
+class Rectangle(Shape):
+    def __init__(self, width: float, height: float):
+        self.width = width
+        self.height = height
+
+    def area(self) -> float:
+        """Compute the area of the rectangle."""
+        return self.width * self.height
+
+    def perimeter(self) -> float:
+        """Compute the perimeter of the rectangle."""
+        return 2 * (self.width + self.height)
 
 class ShapeFactory:
-    """
-    Factory to create shapes.
-    """
-
     @staticmethod
-    def create_shape(shape_type: str) -> Shape:
-        """
-        Creates a shape based on the provided type.
-
-        :param shape_type: The type of shape to create ('circle' or 'square').
-        :returns: An instance of a shape.
-        :raises ValueError: If an unsupported shape type is provided.
-        """
+    def create_shape(shape_type: str, *args: float) -> Shape:
+        """Factory method to create shapes based on provided type."""
         shape_type = shape_type.lower()
         if shape_type == 'circle':
-            return Circle()
-        elif shape_type == 'square':
-            return Square()
+            if len(args) != 1 or args[0] <= 0:
+                raise ValueError("Circle requires a positive radius.")
+            return Circle(args[0])
+        elif shape_type == 'rectangle':
+            if len(args) != 2 or args[0] <= 0 or args[1] <= 0:
+                raise ValueError("Rectangle requires positive width and height.")
+            return Rectangle(args[0], args[1])
         else:
-            raise ValueError(f"Unsupported shape type: {shape_type}")
+            raise ValueError(f"Unknown shape type: {shape_type}")
 
-# Sample usage
+# Sample Usage
 if __name__ == "__main__":
+    shapes: List[Shape] = []
+    
     try:
-        shapes = ['circle', 'square', 'triangle']
-        for shape_name in shapes:
-            shape = ShapeFactory.create_shape(shape_name)
-            shape.draw()
+        circle = ShapeFactory.create_shape('circle', 5)
+        rectangle = ShapeFactory.create_shape('rectangle', 4, 6)
+        
+        shapes.append(circle)
+        shapes.append(rectangle)
+
+        for shape in shapes:
+            print(f"{shape.__class__.__name__} - Area: {shape.area()}, Perimeter: {shape.perimeter()}")
+    
     except ValueError as e:
         print(e)
