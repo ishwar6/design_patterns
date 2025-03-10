@@ -1,36 +1,39 @@
-# structural/shape_area_calculator.py
+# structural/shape_calculator.py
 
-class ShapeAreaCalculator:
-    """A calculator for the areas of various geometric shapes."""
+import math
+from typing import Union, Tuple
+
+class ShapeCalculator:
+    """A class that provides calculations for various geometric shapes."""
 
     @staticmethod
-    def calculate_circle_area(radius: float) -> float:
+    def area_circle(radius: float) -> float:
         """Calculate the area of a circle given its radius.
-
+        
         Args:
             radius (float): The radius of the circle.
-
+        
         Returns:
             float: The area of the circle.
-
+        
         Raises:
-            ValueError: If radius is negative.
+            ValueError: If the radius is negative.
         """
         if radius < 0:
             raise ValueError("Radius cannot be negative.")
-        return 3.14159 * (radius ** 2)
+        return math.pi * (radius ** 2)
 
     @staticmethod
-    def calculate_rectangle_area(width: float, height: float) -> float:
+    def area_rectangle(width: float, height: float) -> float:
         """Calculate the area of a rectangle given its width and height.
-
+        
         Args:
             width (float): The width of the rectangle.
             height (float): The height of the rectangle.
-
+        
         Returns:
             float: The area of the rectangle.
-
+        
         Raises:
             ValueError: If width or height is negative.
         """
@@ -39,16 +42,16 @@ class ShapeAreaCalculator:
         return width * height
 
     @staticmethod
-    def calculate_triangle_area(base: float, height: float) -> float:
+    def area_triangle(base: float, height: float) -> float:
         """Calculate the area of a triangle given its base and height.
-
+        
         Args:
             base (float): The base of the triangle.
             height (float): The height of the triangle.
-
+        
         Returns:
             float: The area of the triangle.
-
+        
         Raises:
             ValueError: If base or height is negative.
         """
@@ -56,18 +59,44 @@ class ShapeAreaCalculator:
             raise ValueError("Base and height cannot be negative.")
         return 0.5 * base * height
 
+def calculate_shape_areas(shapes: list) -> list:
+    """Calculate areas for a list of shape specifications.
+    
+    Args:
+        shapes (list): A list of tuples where each tuple specifies a shape
+                       and its dimensions in the form (shape_type, dimensions).
+                       shape_type can be 'circle', 'rectangle', or 'triangle'.
+                       dimensions is a tuple of the necessary dimensions.
+                       
+    Returns:
+        list: A list of calculated areas, or errors if any invalid values were provided.
+    """
+    results = []
+    for shape in shapes:
+        shape_type, dimensions = shape[0], shape[1:]
+        try:
+            if shape_type == 'circle':
+                results.append(ShapeCalculator.area_circle(*dimensions))
+            elif shape_type == 'rectangle':
+                results.append(ShapeCalculator.area_rectangle(*dimensions))
+            elif shape_type == 'triangle':
+                results.append(ShapeCalculator.area_triangle(*dimensions))
+            else:
+                results.append(f"Unknown shape type: {shape_type}")
+        except ValueError as e:
+            results.append(str(e))
+    return results
 
+# Sample usage
 if __name__ == "__main__":
-    # Sample usage
-    try:
-        circle_area = ShapeAreaCalculator.calculate_circle_area(5)
-        print(f"Circle Area (radius=5): {circle_area:.2f}")
-
-        rectangle_area = ShapeAreaCalculator.calculate_rectangle_area(4, 3)
-        print(f"Rectangle Area (width=4, height=3): {rectangle_area:.2f}")
-
-        triangle_area = ShapeAreaCalculator.calculate_triangle_area(6, 2)
-        print(f"Triangle Area (base=6, height=2): {triangle_area:.2f}")
-
-    except ValueError as e:
-        print(e)
+    shapes_to_calculate = [
+        ('circle', 5),
+        ('rectangle', 3, 4),
+        ('triangle', 6, 7),
+        ('circle', -1),  # This will raise an error
+        ('unknown_shape', 5)
+    ]
+    
+    areas = calculate_shape_areas(shapes_to_calculate)
+    for shape, area in zip(shapes_to_calculate, areas):
+        print(f"Shape: {shape[0]}, Dimensions: {shape[1:]}, Area: {area}")
