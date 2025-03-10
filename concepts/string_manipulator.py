@@ -1,8 +1,8 @@
-# concepts/string_utilities.py
+# concepts/string_manipulator.py
 
 class StringManipulator:
     """
-    A class to manipulate strings with various utility functions.
+    A class to perform various string manipulation operations.
     """
 
     @staticmethod
@@ -10,50 +10,58 @@ class StringManipulator:
         """
         Reverses the given string.
 
-        Args:
-            input_string (str): The string to be reversed.
+        Parameters:
+        input_string (str): The string to be reversed.
 
         Returns:
-            str: The reversed string. If input is not a string, returns an error message.
+        str: The reversed string.
         """
         if not isinstance(input_string, str):
-            return "Error: Input must be a string"
+            raise ValueError("Input must be a string.")
         return input_string[::-1]
+
+    @staticmethod
+    def is_palindrome(input_string: str) -> bool:
+        """
+        Checks if the given string is a palindrome.
+
+        Parameters:
+        input_string (str): The string to check.
+
+        Returns:
+        bool: True if the string is a palindrome, False otherwise.
+        """
+        if not isinstance(input_string, str):
+            raise ValueError("Input must be a string.")
+        cleaned_string = ''.join(char.lower() for char in input_string if char.isalnum())
+        return cleaned_string == cleaned_string[::-1]
 
     @staticmethod
     def count_vowels(input_string: str) -> int:
         """
         Counts the number of vowels in the given string.
 
-        Args:
-            input_string (str): The string in which to count vowels.
+        Parameters:
+        input_string (str): The string to analyze.
 
         Returns:
-            int: The count of vowels. Returns -1 if input is not a string.
+        int: The number of vowels in the string.
         """
         if not isinstance(input_string, str):
-            return -1
-        vowels = 'aeiouAEIOU'
+            raise ValueError("Input must be a string.")
+        vowels = "aeiouAEIOU"
         return sum(1 for char in input_string if char in vowels)
 
-    @staticmethod
-    def capitalize_words(input_string: str) -> str:
-        """
-        Capitalizes the first letter of each word in the string.
-
-        Args:
-            input_string (str): The string to be capitalized.
-
-        Returns:
-            str: The string with each word capitalized. Returns an error message for non-string inputs.
-        """
-        if not isinstance(input_string, str):
-            return "Error: Input must be a string"
-        return ' '.join(word.capitalize() for word in input_string.split())
 
 # Sample usage
 if __name__ == "__main__":
-    test_string = "hello world"
-    print(StringManipulator.reverse_string(test_string))  # Output: "dlrow olleh"
-    print(StringManipulator.count_vowels(test_string))    # Output: 3
-    print(StringManipulator.capitalize_words(test_string)) # Output: "Hello World"
+    test_string = "A man a plan a canal Panama"
+
+    reversed_string = StringManipulator.reverse_string(test_string)
+    is_palindrome_result = StringManipulator.is_palindrome(test_string)
+    vowel_count = StringManipulator.count_vowels(test_string)
+
+    print(f"Original String: {test_string}")
+    print(f"Reversed String: {reversed_string}")
+    print(f"Is Palindrome: {is_palindrome_result}")
+    print(f"Number of Vowels: {vowel_count}")
