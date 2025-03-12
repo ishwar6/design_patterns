@@ -1,31 +1,51 @@
 import json
 import os
 
-def read_json(file_path):
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f'File {file_path} not found.')
-    with open(file_path, 'r') as file:
-        return json.load(file)
+class DataProcessor:
+    """
+    A class to process and filter JSON data from files.
+    """
 
+    def __init__(self, input_dir, output_file):
+        """
+        Initializes the DataProcessor with an input directory and output file.
+        """
+        self.input_dir = input_dir
+        self.output_file = output_file
 
-def filter_data(data, threshold):
-    return [item for item in data if item.get('value', 0) > threshold]
+    def load_data(self):
+        """
+        Loads and returns JSON data from all files in the input directory.
+        """
+        data = []
+        for filename in os.listdir(self.input_dir):
+            if filename.endswith('.json'):
+                with open(os.path.join(self.input_dir, filename), 'r') as f:
+                    data.append(json.load(f))
+        return data
 
+    def filter_data(self, data, key, value):
+        """
+        Filters the loaded data based on a key-value pair.
+        """
+        return [item for item in data if item.get(key) == value]
 
-def save_filtered_data(data, output_path):
-    with open(output_path, 'w') as file:
-        json.dump(data, file, indent=4)
+    def save_data(self, data):
+        """
+        Saves the filtered data to the specified output file in JSON format.
+        """
+        with open(self.output_file, 'w') as f:
+            json.dump(data, f, indent=4)
 
-
-def process_json(input_path, output_path, threshold):
-    data = read_json(input_path)
-    filtered_data = filter_data(data, threshold)
-    save_filtered_data(filtered_data, output_path)
-    print(f'Filtered data saved to {output_path}')
-
+    def process(self, filter_key, filter_value):
+        """
+        Executes the data processing workflow: load, filter, and save.
+        """
+        loaded_data = self.load_data()
+        filtered_data = self.filter_data(loaded_data, filter_key, filter_value)
+        self.save_data(filtered_data)
+        print(f"Processed {len(loaded_data)} records, saved {len(filtered_data)} records to {self.output_file}.")
 
 if __name__ == '__main__':
-    input_file = 'data.json'
-    output_file = 'filtered_data.json'
-    threshold_value = 10
-    process_json(input_file, output_file, threshold_value)
+    processor = DataProcessor('data', 'output.json')
+    processor.process('status', 'active')
