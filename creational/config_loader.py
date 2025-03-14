@@ -1,31 +1,30 @@
 import json
-import os
+from typing import Dict, Any
 
-class ConfigLoader:
+class ConfigurationLoader:
     """Loads configuration from a JSON file."""
-    def __init__(self, file_path):
-        """Initializes ConfigLoader with the path to the config file."""
+    def __init__(self, file_path: str) -> None:
+        """Initializes the loader with a file path."""
         self.file_path = file_path
-        self.config_data = self.load_config()
+        self.config = self.load_config()
 
-    def load_config(self):
-        """Reads the JSON file and returns the configuration data."""
-        if not os.path.exists(self.file_path):
-            raise FileNotFoundError(f"Configuration file not found: {self.file_path}")
+    def load_config(self) -> Dict[str, Any]:
+        """Loads and returns the configuration data from the JSON file."""
         with open(self.file_path, 'r') as file:
             return json.load(file)
 
-    def get_value(self, key):
-        """Retrieves a value from the configuration data by key."""
-        return self.config_data.get(key, None)
+    def get_value(self, key: str) -> Any:
+        """Retrieves a value from the configuration by key."""
+        return self.config.get(key, None)
 
-    def save_config(self, new_data):
-        """Saves updated configuration data back to the JSON file."""
-        self.config_data.update(new_data)
+    def update_value(self, key: str, value: Any) -> None:
+        """Updates a value in the configuration and saves the changes to the file."""
+        self.config[key] = value
         with open(self.file_path, 'w') as file:
-            json.dump(self.config_data, file, indent=4)
+            json.dump(self.config, file, indent=4)
 
 if __name__ == '__main__':
-    config_loader = ConfigLoader('config.json')
-    print(config_loader.get_value('database_url'))
-    config_loader.save_config({'database_url': 'mysql://localhost:3306/new_db'})
+    config_loader = ConfigurationLoader('config.json')
+    print(config_loader.get_value('database'))
+    config_loader.update_value('database', 'new_database')
+    print(config_loader.get_value('database'))
