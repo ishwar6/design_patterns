@@ -2,34 +2,34 @@ import json
 import requests
 
 class WeatherFetcher:
-    """Fetches weather data from an external API."""
+    """Fetches weather data from a public API."""
+    API_URL = 'http://api.openweathermap.org/data/2.5/weather'
 
     def __init__(self, api_key):
-        """Initializes the WeatherFetcher with an API key."""
+        """Initializes WeatherFetcher with API key."""
         self.api_key = api_key
-        self.base_url = 'http://api.openweathermap.org/data/2.5/weather'
 
     def fetch_weather(self, city):
         """Fetches weather data for a given city."""
-        parameters = {'q': city, 'appid': self.api_key, 'units': 'metric'}
-        response = requests.get(self.base_url, params=parameters)
-        if response.status_code == 200:
-            return response.json()
-        else:
-            raise Exception('Error fetching data from API')
+        params = {'q': city, 'appid': self.api_key, 'units': 'metric'}
+        response = requests.get(self.API_URL, params=params)
+        return self._handle_response(response)
 
-    def display_weather(self, city):
-        """Displays the weather information for a given city."""
-        try:
-            weather_data = self.fetch_weather(city)
-            print(f"City: {weather_data['name']}")
-            print(f"Temperature: {weather_data['main']['temp']}°C")
-            print(f"Weather: {weather_data['weather'][0]['description']}")
-        except Exception as e:
-            print(e)
+    def _handle_response(self, response):
+        """Handles the API response and returns relevant data."""
+        if response.status_code == 200:
+            data = response.json()
+            return {
+                'city': data['name'],
+                'temperature': data['main']['temp'],
+                'description': data['weather'][0]['description']
+            }
+        else:
+            return {'error': response.json().get('message', 'Error fetching data')}
 
 if __name__ == '__main__':
-    api_key = 'your_api_key_here'
-    city_name = 'London'
-    weather_fetcher = WeatherFetcher(api_key)
-    weather_fetcher.display_weather(city_name)
+    api_key = 'YOUR_API_KEY'
+    fetcher = WeatherFetcher(api_key)
+    city = 'London'
+    weather_data = fetcher.fetch_weather(city)
+    print(json.dumps(weather_data, indent=4))
