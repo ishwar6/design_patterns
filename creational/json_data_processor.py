@@ -1,36 +1,38 @@
 import json
+from typing import List, Dict
 
 class DataProcessor:
-    """
-    A class to process and analyze JSON data.
-    """
+    """Processes and transforms data from JSON files."""
 
-    def __init__(self, data):
-        """
-        Initializes the DataProcessor with JSON data.
-        """
-        self.data = json.loads(data)
+    def __init__(self, input_file: str, output_file: str) -> None:
+        """Initializes DataProcessor with input and output file paths."""
+        self.input_file = input_file
+        self.output_file = output_file
 
-    def filter_data(self, key, threshold):
-        """
-        Filters data entries based on a specified key and threshold.
-        """
-        return [entry for entry in self.data if entry.get(key, 0) > threshold]
+    def read_data(self) -> List[Dict]:
+        """Reads JSON data from the input file."""
+        with open(self.input_file, 'r') as file:
+            return json.load(file)
 
-    def summarize_data(self, key):
-        """
-        Summarizes the total for a specified key in the data.
-        """
-        return sum(entry.get(key, 0) for entry in self.data)
+    def transform_data(self, data: List[Dict]) -> List[Dict]:
+        """Transforms the data by filtering and modifying entries."""
+        return [
+            {"name": item['name'], "age": item['age'] + 1}
+            for item in data
+            if item['age'] >= 18
+        ]
+
+    def write_data(self, data: List[Dict]) -> None:
+        """Writes the transformed data to the output file."""
+        with open(self.output_file, 'w') as file:
+            json.dump(data, file, indent=4)
+
+    def process(self) -> None:
+        """Executes the data processing workflow: read, transform, and write data."""
+        data = self.read_data()
+        transformed_data = self.transform_data(data)
+        self.write_data(transformed_data)
 
 if __name__ == '__main__':
-    json_data = '''[
-        {"name": "Alice", "age": 30, "score": 85},
-        {"name": "Bob", "age": 22, "score": 90},
-        {"name": "Charlie", "age": 25, "score": 70}
-    ]'''  
-    processor = DataProcessor(json_data)
-    filtered = processor.filter_data('score', 80)
-    total_score = processor.summarize_data('score')
-    print('Filtered Data:', filtered)
-    print('Total Score:', total_score)
+    processor = DataProcessor('input.json', 'output.json')
+    processor.process()
