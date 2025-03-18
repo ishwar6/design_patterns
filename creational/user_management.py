@@ -1,34 +1,34 @@
 import json
+from typing import List, Dict
 
 class User:
-    """Represents a user in the system."""
-    def __init__(self, username, email):
-        """Initializes a new user with a username and email."""
-        self.username = username
+    """Represents a user with a name and email."""
+    def __init__(self, name: str, email: str) -> None:
+        self.name = name
         self.email = email
 
-    def to_dict(self):
-        """Converts the user object to a dictionary."""
-        return {'username': self.username, 'email': self.email}
-
 class UserManager:
-    """Manages user operations such as creation and storage."""
-    def __init__(self):
-        """Initializes the user manager with an empty user list."""
-        self.users = []
+    """Manages a collection of users."""
+    def __init__(self) -> None:
+        self.users: List[User] = []
 
-    def add_user(self, user):
-        """Adds a user to the user list."""
+    def add_user(self, name: str, email: str) -> None:
+        """Adds a user to the collection."""
+        user = User(name, email)
         self.users.append(user)
 
-    def save_to_file(self, file_path):
-        """Saves the list of users to a JSON file."""
-        with open(file_path, 'w') as file:
-            json.dump([user.to_dict() for user in self.users], file, indent=4)
+    def to_json(self) -> str:
+        """Converts the user collection to a JSON string."""
+        return json.dumps([{'name': user.name, 'email': user.email} for user in self.users], indent=4)
+
+    def save_to_file(self, filename: str) -> None:
+        """Saves the user collection to a file in JSON format."""
+        with open(filename, 'w') as f:
+            f.write(self.to_json())
 
 if __name__ == '__main__':
-    user_manager = UserManager()
-    user_manager.add_user(User('john_doe', 'john@example.com'))
-    user_manager.add_user(User('jane_smith', 'jane@example.com'))
-    user_manager.save_to_file('users.json')
-    print('User data saved to users.json')
+    manager = UserManager()
+    manager.add_user('Alice Smith', 'alice@example.com')
+    manager.add_user('Bob Johnson', 'bob@example.com')
+    manager.save_to_file('users.json')
+    print('Users saved to users.json')
