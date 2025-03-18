@@ -2,37 +2,37 @@ import json
 
 class DataProcessor:
     """
-    A class to process and filter JSON data.
+    A class for processing and manipulating JSON data.
     """
-    def __init__(self, data):
+    def __init__(self, json_file):
         """
-        Initializes the DataProcessor with JSON data.
+        Initializes the DataProcessor with a JSON file.
         """
-        self.data = data
+        self.json_file = json_file
+        self.data = self.load_data()
 
-    def filter_data(self, threshold):
+    def load_data(self):
         """
-        Filters the data based on a threshold value.
-        Returns entries greater than the threshold.
+        Loads JSON data from the specified file.
         """
-        return [entry for entry in self.data if entry['value'] > threshold]
+        with open(self.json_file, 'r') as file:
+            return json.load(file)
+
+    def filter_data(self, key, value):
+        """
+        Filters the data based on a key-value pair.
+        """
+        return [item for item in self.data if item.get(key) == value]
 
     def save_filtered_data(self, filtered_data, output_file):
         """
-        Saves the filtered data to a specified JSON file.
+        Saves the filtered data to a new JSON file.
         """
-        with open(output_file, 'w') as f:
-            json.dump(filtered_data, f, indent=4)
+        with open(output_file, 'w') as file:
+            json.dump(filtered_data, file, indent=4)
 
 if __name__ == '__main__':
-    sample_data = [
-        {'id': 1, 'value': 10},
-        {'id': 2, 'value': 20},
-        {'id': 3, 'value': 5},
-        {'id': 4, 'value': 30}
-    ]
-    processor = DataProcessor(sample_data)
-    threshold_value = 15
-    filtered = processor.filter_data(threshold_value)
+    processor = DataProcessor('input_data.json')
+    filtered = processor.filter_data('status', 'active')
     processor.save_filtered_data(filtered, 'filtered_data.json')
-    print(f'Filtered data saved: {filtered}')
+    print(f'Filtered data saved to filtered_data.json with {len(filtered)} records.')
