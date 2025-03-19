@@ -1,37 +1,32 @@
 import json
-from typing import List, Dict
+import os
 
 class DataProcessor:
-    def __init__(self, data: List[Dict]) -> None:
-        """Initializes the DataProcessor with a list of dictionaries."""
-        self.data = data
+    """Processes and analyzes data from a JSON file."""
 
-    def filter_by_key(self, key: str, value: str) -> List[Dict]:
-        """Filters the data by a specific key and value."""
-        return [item for item in self.data if item.get(key) == value]
+    def __init__(self, file_path):
+        """Initializes DataProcessor with a file path."""
+        self.file_path = file_path
+        self.data = self.load_data()
 
-    def calculate_average(self, key: str) -> float:
-        """Calculates the average of numeric values associated with a specific key."""
-        total = sum(item.get(key, 0) for item in self.data if isinstance(item.get(key), (int, float)))
-        count = sum(1 for item in self.data if isinstance(item.get(key), (int, float)))
-        return total / count if count > 0 else 0.0
+    def load_data(self):
+        """Loads data from a JSON file and returns it as a dictionary."""
+        if not os.path.exists(self.file_path):
+            raise FileNotFoundError(f"{self.file_path} does not exist")
+        with open(self.file_path, 'r') as file:
+            return json.load(file)
 
-    def to_json(self, output_file: str) -> None:
-        """Writes the data to a JSON file."""
-        with open(output_file, 'w') as f:
-            json.dump(self.data, f, indent=4)
+    def get_average(self, key):
+        """Calculates the average value of a specified key in the data."""
+        values = [item[key] for item in self.data if key in item]
+        return sum(values) / len(values) if values else 0
+
+    def save_summary(self, output_path):
+        """Saves the average values of all numerical keys to a summary file."""
+        summary = {key: self.get_average(key) for key in self.data[0].keys() if isinstance(self.data[0][key], (int, float))}
+        with open(output_path, 'w') as file:
+            json.dump(summary, file, indent=4)
 
 if __name__ == '__main__':
-    sample_data = [
-        {'name': 'Alice', 'age': 30, 'score': 85},
-        {'name': 'Bob', 'age': 22, 'score': 90},
-        {'name': 'Charlie', 'age': 30, 'score': 95},
-        {'name': 'David', 'age': 22, 'score': 80}
-    ]
-    processor = DataProcessor(sample_data)
-    filtered_data = processor.filter_by_key('age', '30')
-    print('Filtered Data:', filtered_data)
-    average_score = processor.calculate_average('score')
-    print('Average Score:', average_score)
-    processor.to_json('output.json')
-    print('Data written to output.json')
+    processor = DataProcessor('data.json')
+    processor.save_summary('summary.json')
