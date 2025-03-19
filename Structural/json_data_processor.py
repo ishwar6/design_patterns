@@ -2,35 +2,47 @@ import json
 import os
 
 class DataProcessor:
-    """Processes JSON data for analysis and reporting."""
-    def __init__(self, input_file, output_file):
-        """Initializes the DataProcessor with input and output file paths."""
-        self.input_file = input_file
-        self.output_file = output_file
+    """
+    A class to process and manage JSON data files.
+    """
 
-    def read_data(self):
-        """Reads JSON data from the input file."""
-        if not os.path.exists(self.input_file):
-            raise FileNotFoundError(f"Input file {self.input_file} does not exist.")
-        with open(self.input_file, 'r') as file:
+    def __init__(self, directory):
+        """
+        Initializes the DataProcessor with a directory.
+        """
+        self.directory = directory
+
+    def load_data(self, filename):
+        """
+        Loads data from a JSON file.
+        """
+        file_path = os.path.join(self.directory, filename)
+        with open(file_path, 'r') as file:
             return json.load(file)
 
-    def process_data(self, data):
-        """Processes the input data by filtering and transforming it."""
-        return [entry for entry in data if entry.get('active')]
-
-    def write_data(self, data):
-        """Writes the processed data to the output file."""
-        with open(self.output_file, 'w') as file:
+    def save_data(self, filename, data):
+        """
+        Saves data to a JSON file.
+        """
+        file_path = os.path.join(self.directory, filename)
+        with open(file_path, 'w') as file:
             json.dump(data, file, indent=4)
 
-    def execute(self):
-        """Executes the data processing workflow."""
-        raw_data = self.read_data()
-        processed_data = self.process_data(raw_data)
-        self.write_data(processed_data)
-        print(f"Processed data written to {self.output_file}.")
+    def filter_data(self, data, key, value):
+        """
+        Filters the data by a specific key-value pair.
+        """
+        return [item for item in data if item.get(key) == value]
+
+    def process(self, input_file, output_file, key, value):
+        """
+        Loads, filters, and saves data based on given criteria.
+        """
+        data = self.load_data(input_file)
+        filtered_data = self.filter_data(data, key, value)
+        self.save_data(output_file, filtered_data)
+        print(f'Processed data saved to {output_file}.')
 
 if __name__ == '__main__':
-    processor = DataProcessor('input.json', 'output.json')
-    processor.execute()
+    processor = DataProcessor('./data')
+    processor.process('input.json', 'output.json', 'status', 'active')
