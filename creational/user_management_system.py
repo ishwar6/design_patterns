@@ -1,43 +1,41 @@
 import json
+from typing import List, Dict
 
 class User:
-    """Represents a user with a name and email."""
-    def __init__(self, name, email):
-        """Initializes the User with a name and email."""
+    """Represents a user with a name and age."""
+    def __init__(self, name: str, age: int):
         self.name = name
-        self.email = email
+        self.age = age
 
-    def to_dict(self):
-        """Converts User object to dictionary format for JSON serialization."""
-        return {'name': self.name, 'email': self.email}
+    def to_dict(self) -> Dict[str, str]:
+        """Converts the User object to a dictionary."""
+        return {'name': self.name, 'age': self.age}
 
 class UserManager:
-    """Manages a collection of users."""
+    """Handles operations related to users."""
     def __init__(self):
-        """Initializes an empty list of users."""
-        self.users = []
+        self.users: List[User] = []
 
-    def add_user(self, user):
-        """Adds a User object to the users list."""
+    def add_user(self, user: User) -> None:
+        """Adds a user to the user manager."""
         self.users.append(user)
 
-    def save_to_file(self, file_path):
-        """Saves the users list to a JSON file."""
-        with open(file_path, 'w') as file:
+    def save_users_to_file(self, filename: str) -> None:
+        """Saves the list of users to a JSON file."""
+        with open(filename, 'w') as file:
             json.dump([user.to_dict() for user in self.users], file, indent=4)
 
-    def load_from_file(self, file_path):
-        """Loads users from a JSON file into the users list."""
-        with open(file_path, 'r') as file:
-            user_data = json.load(file)
-            for item in user_data:
-                self.add_user(User(item['name'], item['email']))
+    def load_users_from_file(self, filename: str) -> None:
+        """Loads users from a JSON file into the user manager."""
+        with open(filename, 'r') as file:
+            users_data = json.load(file)
+            self.users = [User(**data) for data in users_data]
 
 if __name__ == '__main__':
-    user_manager = UserManager()
-    user_manager.add_user(User('Alice', 'alice@example.com'))
-    user_manager.add_user(User('Bob', 'bob@example.com'))
-    user_manager.save_to_file('users.json')
-    user_manager.load_from_file('users.json')
-    for user in user_manager.users:
-        print(f'User: {user.name}, Email: {user.email}')
+    manager = UserManager()
+    manager.add_user(User('Alice', 30))
+    manager.add_user(User('Bob', 25))
+    manager.save_users_to_file('users.json')
+    manager.load_users_from_file('users.json')
+    for user in manager.users:
+        print(user.to_dict())
